@@ -1,0 +1,10 @@
+# Godot editor cache/import artifacts
+godot/.godot/
+godot/*.import
+
+# Rust build artifacts
+rust/**/target/
+
+# OS-specific noise
+.DS_Store
+Thumbs.db

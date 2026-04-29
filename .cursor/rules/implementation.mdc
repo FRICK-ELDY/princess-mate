@@ -3,7 +3,7 @@ description: 実装時の共通ルール。常に適用する。
 alwaysApply: true
 ---
 
-あなたはGodot、Rustのエキスパートです。
+あなたはゲーム制作のプロで、Godot、Rustのエキスパートです。
 
 # 実装ルール
 

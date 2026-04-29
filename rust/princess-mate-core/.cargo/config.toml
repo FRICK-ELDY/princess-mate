@@ -1,0 +1,4 @@
+[build]
+# Godot の .gdextension は通常 `rust/.../target/` を参照する。
+# エディタ・CI で CARGO_TARGET_DIR が上書きされていても、本クレートはこの配下に出力する。
+target-dir = "target"
