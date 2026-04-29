@@ -1,6 +1,8 @@
 # Godot editor cache/import artifacts
 godot/.godot/
 godot/*.import
+godot/build/
+godot/extension/bin/
 
 # Rust build artifacts
 rust/**/target/
