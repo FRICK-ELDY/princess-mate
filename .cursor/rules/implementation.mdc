@@ -1,0 +1,71 @@
+---
+description: 実装時の共通ルール。常に適用する。
+alwaysApply: true
+---
+
+あなたはGodot、Rustのエキスパートです。
+
+# 実装ルール
+
+## 保証の原則（プログラミングの自論）
+
+- 何を保証して、何を保証しないかを明確にする
+- 依存関係を利用するとき、何が保証され、何が保証されないかを明確に知っておく
+- プロジェクト単位で何を保証するか保証しないかを明確にする
+- フォルダ単位で何を保証するか保証しないかを明確にする
+- ファイル単位で何を保証するか保証しないかを明確にする
+- 保証の単位でフォルダやファイルを分ける
+
+## Rust 実装規則
+
+### SoA（Structure of Arrays）を維持する
+
+```rust
+// ✅ GOOD: SoA形式
+struct EnemyWorld {
+    positions_x: Vec<f32>,
+    positions_y: Vec<f32>,
+    hp: Vec<f32>,
+    alive: Vec<bool>,
+    free_list: Vec<usize>,
+}
+
+// ❌ BAD: AoS形式（キャッシュ効率が悪い）
+struct Enemy { x: f32, y: f32, hp: f32, alive: bool }
+struct EnemyWorld { enemies: Vec<Enemy> }
+```
+
+### unsafe ブロックの使用
+
+- `unsafe` を使う場合は必ずコメントで安全性の根拠を説明する
+- SIMD（SSE2等）使用時は `#[cfg(target_feature = "sse2")]` でフォールバックを用意する
+
+### エラーハンドリング
+
+```rust
+// ✅ GOOD
+fn process() -> Result<(), GameError> { ... }
+
+// ❌ BAD: unwrap/expect をホットパスで使わない
+let val = some_option.unwrap();
+```
+
+## Elixir 実装規則
+
+### GenServer の責務を分離する
+
+- 1つのGenServerに複数の責務を持たせない
+- 状態の読み取りは `handle_call`、副作用は `handle_cast` / `handle_info` を使い分ける
+
+### パターンマッチを活用する
+
+```elixir
+# ✅ GOOD
+def handle_info({:frame_events, events}, state) do
+  Enum.reduce(events, state, &process_event/2)
+end
+
+# ❌ BAD: if/case の多用
+def handle_info(msg, state) do
+  if is_tuple(msg) and elem(msg, 0) == :frame_events do ...
+```
